@@ -39,7 +39,8 @@ jobs:
         with:
           name: jmeter-results
           path: results.jtl
-
+      - name: Create results folders
+        run: mkdir -p results/html
 
       - name: Generate HTML Report
         run: |
