@@ -10,6 +10,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
+      - name: Criar diretório de resultados
+        run: mkdir -p results
+
+      - name: Listar arquivos do projeto
+        run: ls -R
 
       - name: Install Java
         uses: actions/setup-java@v4
@@ -39,14 +45,20 @@ jobs:
         with:
           name: jmeter-results
           path: results.jtl
+          
       - name: Create results folders
         run: mkdir -p results/html
 
-      - name: Generate HTML Report
-        run: |
-          jmeter/bin/jmeter -g results/results.jtl -o results/html
+      - name: Verificar arquivo JTL
+        run: ls -lh results
 
-      - name: Upload report
+      - name: Gerar relatório HTML
+        run: jmeter/bin/jmeter -g results/results.jtl -o results/html
+
+      - name: Listar relatório HTML
+        run: ls -R results/html
+
+      - name: Upload do relatório
         uses: actions/upload-artifact@v4
         with:
           name: jmeter-report
