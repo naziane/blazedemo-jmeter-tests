@@ -29,7 +29,7 @@ jobs:
           tar -xzf apache-jmeter-5.6.3.tgz
           mv apache-jmeter-5.6.3 jmeter
 
-      - name: Instalar Ultimate Thread Group (casutg) manualmente
+      - name: Instalar Ultimate Thread Group (casutg)
         run: |
           wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar -P jmeter/lib/ext
 
@@ -38,17 +38,14 @@ jobs:
 
       - name: Run JMeter test
         run: |
-          jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results.jtl
+          jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results/results.jtl
 
-      - name: Upload results
+      - name: Upload results JTL
         uses: actions/upload-artifact@v4
         with:
           name: jmeter-results
-          path: results.jtl
+          path: results/results.jtl
           
-      - name: Create results folders
-        run: mkdir -p results/html
-
       - name: Verificar arquivo JTL
         run: ls -lh results
 
