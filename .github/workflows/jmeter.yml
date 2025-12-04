@@ -9,8 +9,6 @@ branches: ["main"]
 jobs:
 jmeter-test:
 runs-on: ubuntu-latest
-
-```
 steps:
   - name: Checkout código
     uses: actions/checkout@v3
