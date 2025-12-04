@@ -34,7 +34,8 @@ jobs:
           wget https://repo1.maven.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar -P jmeter/lib
 
           # Install Ultimate Thread Group
-          java -cp "jmeter/lib/ext/*:jmeter/lib/*" org.jmeterplugins.repository.PluginManagerCMD install jpgc-casutg
+          java -cp "jmeter/lib/ext/jmeter-plugins-manager-1.9.jar:jmeter/lib/cmdrunner-2.2.jar" org.jmeterplugins.repository.PluginManagerCMD install jpgc-casutg
+
 
       - name: Run JMeter Tests
         run: |
