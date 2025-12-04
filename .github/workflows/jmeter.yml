@@ -1,0 +1,60 @@
+name: Run JMeter Tests - BlazeDemo
+
+on:
+push:
+branches: ["main"]
+pull_request:
+branches: ["main"]
+
+jobs:
+jmeter-test:
+runs-on: ubuntu-latest
+
+```
+steps:
+  - name: Checkout código
+    uses: actions/checkout@v3
+
+  - name: Instalar Java
+    uses: actions/setup-java@v3
+    with:
+      distribution: "temurin"
+      java-version: "17"
+
+  - name: Baixar Apache JMeter
+    run: |
+      wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
+      tar -xvzf apache-jmeter-5.6.3.tgz
+      export JMETER_HOME=$PWD/apache-jmeter-5.6.3
+      export PATH=$JMETER_HOME/bin:$PATH
+
+  - name: Rodar teste de carga
+    run: |
+      mkdir -p results
+      jmeter -n -t tests/blazedemo.jmx -l results/carga.jtl -j results/carga.log
+
+  - name: Gerar relatório HTML (carga)
+    run: |
+      jmeter -g results/carga.jtl -o report-carga
+
+  - name: Upload relatório de carga
+    uses: actions/upload-artifact@v3
+    with:
+      name: report-carga
+      path: report-carga/
+
+  - name: Rodar teste de pico
+    run: |
+      jmeter -n -t tests/blazedemo.jmx -l results/pico.jtl -j results/pico.log \
+        -Jusers=200 -Jramp=10
+
+  - name: Gerar relatório HTML (pico)
+    run: |
+      jmeter -g results/pico.jtl -o report-pico
+
+  - name: Upload relatório de pico
+    uses: actions/upload-artifact@v3
+    with:
+      name: report-pico
+      path: report-pico/
+```

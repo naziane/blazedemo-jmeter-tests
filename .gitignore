@@ -1,0 +1,17 @@
+# JMeter
+
+*.jtl
+*.log
+*.csv
+*.tmp
+
+# Resultados e relatórios
+
+results/
+reports/
+html-report/
+
+# Sistema
+
+.DS_Store
+Thumbs.db
