@@ -3,44 +3,43 @@ name: Run JMeter Tests - BlazeDemo
 on:
   push:
     branches: ["main"]
-  pull_request:
-    branches: ["main"]
 
 jobs:
-  jmeter-test:
+  jmeter:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      
+
       - name: Install Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'      
+          java-version: '17'
 
-      - name: Install JMeter
+      - name: Download Apache JMeter
         run: |
-          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.6.3.tgz
+          wget https://downloads.apache.org/jmeter/binaries/apache-jmeter-5.6.3.tgz
           tar -xzf apache-jmeter-5.6.3.tgz
           mv apache-jmeter-5.6.3 jmeter
 
-      - name: Install Plugin Manager 1.6 and CMDRunner
+      - name: Instalar Ultimate Thread Group (casutg) manualmente
         run: |
-          # Plugin Manager (1.6 = última versão com PluginManagerCMD funcional)
-          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-manager/1.6/jmeter-plugins-manager-1.6.jar -P jmeter/lib/ext
+          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar -P jmeter/lib/ext
 
-          # CMDRunner 2.2
-          wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar -P jmeter/lib
+      - name: Listar plugins instalados
+        run: ls -l jmeter/lib/ext
 
-          # Instalar Ultimate Thread Group (jpgc-casutg)
-          java -cp "jmeter/lib/ext/jmeter-plugins-manager-1.6.jar:jmeter/lib/cmdrunner-2.2.jar" \
-            org.jmeterplugins.repository.PluginManagerCMD install jpgc-casutg
-
-      - name: Run JMeter Test
+      - name: Run JMeter test
         run: |
-          mkdir -p results
-          jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results/results.jtl
+          jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results.jtl
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-results
+          path: results.jtl
+
 
       - name: Generate HTML Report
         run: |
