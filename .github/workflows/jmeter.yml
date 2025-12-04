@@ -28,9 +28,10 @@ jobs:
           tar -xzf apache-jmeter-5.6.3.tgz
           mv apache-jmeter-5.6.3 jmeter
 
-      - name: Run JMeter Test
+      - name: Run JMeter test
         run: |
-          jmeter/bin/jmeter -n -t blazedemo.jmx -l results.jtl
+          jmeter -n -t tests/blazedemo.jmx -l results.jtl
+
 
       - name: Upload Results
         uses: actions/upload-artifact@v4
