@@ -32,23 +32,21 @@ jobs:
           mkdir -p jmeter/lib/cmdrunner
 
           # Plugin Manager
+          curl -sSL https://jmeter-plugins.org/get/ \
+            -o jmeter/lib/ext/jmeter-plugins-manager.jar
 
-         curl -sSL https://jmeter-plugins.org/get/ \
-          -o jmeter/lib/ext/jmeter-plugins-manager.jar
-
-         wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
-          -P jmeter/lib
-
-
-          # CMDRunner
-          wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
+          # CMDRunner (necessário para PluginManagerCMD)
+          wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
+            -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
 
           # Instalar Plugin Manager automaticamente
-          java -cp jmeter/lib/ext/jmeter-plugins-manager.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
+          java -cp jmeter/lib/ext/jmeter-plugins-manager.jar \
+            org.jmeterplugins.repository.PluginManagerCMDInstaller
 
       - name: Instalar Ultimate Thread Group (casutg)
         run: |
-          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar -P jmeter/lib/ext
+          java -cp "jmeter/lib/ext/*:jmeter/lib/cmdrunner/cmdrunner-2.2.jar" \
+            org.jmeterplugins.manager.PluginManagerCMD install jpgc-casutg
 
       - name: Listar plugins instalados
         run: ls -l jmeter/lib/ext
