@@ -32,6 +32,9 @@ jobs:
       - name: Instalar Ultimate Thread Group (casutg)
         run: |
           wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar -P jmeter/lib/ext
+          mkdir -p $JMETER_HOME/lib/ext
+          curl -sSL https://jmeter-plugins.org/get/ -o $JMETER_HOME/lib/ext/jmeter-plugins-manager.jar
+
 
       - name: Listar plugins instalados
         run: ls -l jmeter/lib/ext
