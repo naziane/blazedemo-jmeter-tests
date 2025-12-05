@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
+        
       - name: Criar diretório de resultados
         run: mkdir -p results
 
@@ -27,18 +27,18 @@ jobs:
           mv apache-jmeter-5.6.3 jmeter
 
       # ----------------------------------------------------------
-      # Instalar os plugins MANUALMENTE (SEM PluginManagerCMD)
+      # Instalar CASUTG + TST (SEM Plugin Manager)
       # ----------------------------------------------------------
-      - name: Instalar Plugin CASUTG + Standard (necessário para VTTimer)
+      - name: Instalar plugins JMeter necessários
         run: |
           mkdir -p jmeter/lib/ext
 
-          # CASUTG (Ultimate Thread Group)
+          # Ultimate Thread Group
           wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar \
             -P jmeter/lib/ext
 
-          # Standard Set (CONTÉM VariableThroughputTimer)
-          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-standard/1.4/jmeter-plugins-standard-1.4.jar \
+          # Throughput Shaping Timer (TST)
+          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-tst/2.9/jmeter-plugins-tst-2.9.jar \
             -P jmeter/lib/ext
 
       - name: Verificar instalação
