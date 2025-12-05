@@ -27,7 +27,7 @@ jobs:
           mv apache-jmeter-5.6.3 jmeter
 
       - name: Instalar JMeter Plugins Manager
-          run: |
+        run: |
             mkdir -p jmeter/lib/ext
             mkdir -p jmeter/lib/cmdrunner
 
