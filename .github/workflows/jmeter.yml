@@ -32,7 +32,13 @@ jobs:
           mkdir -p jmeter/lib/cmdrunner
 
           # Plugin Manager
-          wget https://jmeter-plugins.org/get/ -O jmeter/lib/ext/jmeter-plugins-manager.jar
+
+         curl -sSL https://jmeter-plugins.org/get/ \
+          -o jmeter/lib/ext/jmeter-plugins-manager.jar
+
+         wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
+          -P jmeter/lib
+
 
           # CMDRunner
           wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
