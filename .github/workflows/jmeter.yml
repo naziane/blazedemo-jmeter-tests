@@ -7,19 +7,21 @@ on:
 jobs:
   jmeter:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        
+
       - name: Criar diretório de resultados
         run: mkdir -p results
 
-      - name: Install Java
+      # ----------------------------
+      # Instalar JDK 11 (necessário para o PluginManagerCMD)
+      # ----------------------------
+      - name: Install Java 11
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '11'
 
       - name: Download Apache JMeter
         run: |
@@ -32,29 +34,34 @@ jobs:
           mkdir -p jmeter/lib/ext
           mkdir -p jmeter/lib/cmdrunner
 
-          # Plugin Manager
           curl -sSL https://jmeter-plugins.org/get/ \
             -o jmeter/lib/ext/jmeter-plugins-manager.jar
 
-          # CMDRunner
           wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
             -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
 
-          # Instala o PluginManagerCMD.jar
+          # >>> ESSENCIAL: Java 11 funciona, Java 17 quebra!
           java -cp "jmeter/lib/ext/jmeter-plugins-manager.jar:jmeter/lib/cmdrunner/cmdrunner-2.2.jar" \
             org.jmeterplugins.repository.PluginManagerCMDInstaller
 
+      - name: Debug listar arquivos
+        run: |
+          ls -lh jmeter/lib/cmdrunner
+
+      # Instalar CASUTG
       - name: Instalar CASUTG (Ultimate Thread Group)
         run: |
           java -cp "jmeter/lib/ext/*:jmeter/lib/cmdrunner/*" \
             org.jmeterplugins.manager.PluginManagerCMD install jpgc-casutg
 
-      - name: Verificar instalação
-        run: |
-          echo "=== EXT ==="
-          ls -l jmeter/lib/ext
-          echo "=== CMD RUNNER ==="
-          ls -l jmeter/lib/cmdrunner
+      # ----------------------------
+      # Agora troca para Java 17 (só para rodar o teste)
+      # ----------------------------
+      - name: Install Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Run JMeter test
         run: jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results/results.jtl
