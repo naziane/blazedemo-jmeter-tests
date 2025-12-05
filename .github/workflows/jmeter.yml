@@ -45,8 +45,7 @@ jobs:
 
       - name: Instalar Ultimate Thread Group (casutg)
         run: |
-          java -cp "jmeter/lib/ext/*:jmeter/lib/cmdrunner/cmdrunner-2.2.jar" \
-            org.jmeterplugins.manager.PluginManagerCMD install jpgc-casutg
+          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar -P jmeter/lib/ext
 
       - name: Listar plugins instalados
         run: ls -l jmeter/lib/ext
