@@ -14,7 +14,7 @@ jobs:
       - name: Criar diretório de resultados
         run: mkdir -p results
 
-      - name: Install Java
+      - name: Install Java 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
@@ -26,33 +26,36 @@ jobs:
           tar -xzf apache-jmeter-5.6.3.tgz
           mv apache-jmeter-5.6.3 jmeter
 
-      - name: Instalar JMeter Plugins Manager
+      - name: Instalar plugins JMeter necessários (sem PluginManager)
         run: |
-            mkdir -p jmeter/lib/ext
-            mkdir -p jmeter/lib/cmdrunner
+          mkdir -p jmeter/lib/ext
+          mkdir -p jmeter/lib/cmdrunner
 
-            # Plugins Manager (link mais recente e válido)
-            wget https://raw.githubusercontent.com/undera/jmeter-plugins/master/plugins-manager/target/PluginsManager.jar \
-              -O jmeter/lib/ext/PluginsManager.jar
+          # Ultimate Thread Group (casutg)
+          wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar \
+            -P jmeter/lib/ext
 
-            # CMDRunner (repositório oficial)
-            wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
-              -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
+          # Throughput Shaping Timer (contém VariableThroughputTimer) - usar versão disponível no Maven (ex: 2.6)
+          wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-tst/2.6/jmeter-plugins-tst-2.6.jar \
+            -P jmeter/lib/ext
 
-            ls -R jmeter/lib
+          # Common classes required by many plugins
+          wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-cmn-jmeter/0.7/jmeter-plugins-cmn-jmeter-0.7.jar \
+            -P jmeter/lib/ext
 
+          # (opcional) cmd tools if you later want Plugins CMD features
+          wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-cmd/2.2/jmeter-plugins-cmd-2.2.jar \
+            -P jmeter/lib/ext
+          
+          echo "=== jmeter/lib/ext contents ==="
+          ls -lh jmeter/lib/ext
 
-      - name: Instalar plugins adicionais via PluginManagerCMD
+      - name: Verificar instalação de plugins (debug)
         run: |
-          java -cp "jmeter/lib/ext/PluginsManager.jar:jmeter/lib/cmdrunner-2.2.jar" \
-            org.jmeterplugins.repository.PluginManagerCMD install \
-            jpgc-casutg,jpgc-tst,jpgc-graphs-basic,jpgc-graphs-additional
-
-          java -cp "jmeter/lib/ext/PluginsManager.jar:jmeter/lib/cmdrunner-2.2.jar" \
-            org.jmeterplugins.repository.PluginManagerCMD status
-
-      - name: Verificar instalação de plugins
-        run: ls -l jmeter/lib/ext
+          echo "== Arquivos em lib/ext =="
+          ls -l jmeter/lib/ext || true
+          echo "== Conteúdo JAR que deve conter VariableThroughputTimer =="
+          jar tf jmeter/lib/ext/jmeter-plugins-tst-2.6.jar | grep VariableThroughputTimer || true
 
       - name: Run JMeter test
         run: jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results/results.jtl
@@ -70,4 +73,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jmeter-report
-          path: result
+          path: results/html
