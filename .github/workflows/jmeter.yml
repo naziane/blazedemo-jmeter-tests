@@ -7,6 +7,7 @@ on:
 jobs:
   jmeter:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,18 +32,21 @@ jobs:
           mkdir -p jmeter/lib/ext
           mkdir -p jmeter/lib/cmdrunner
 
+          # Plugin Manager
           curl -sSL https://jmeter-plugins.org/get/ \
             -o jmeter/lib/ext/jmeter-plugins-manager.jar
 
+          # CMDRunner
           wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
             -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
 
-          java -cp jmeter/lib/ext/jmeter-plugins-manager.jar \
+          # Instala o PluginManagerCMD.jar
+          java -cp "jmeter/lib/ext/jmeter-plugins-manager.jar:jmeter/lib/cmdrunner/cmdrunner-2.2.jar" \
             org.jmeterplugins.repository.PluginManagerCMDInstaller
 
       - name: Instalar CASUTG (Ultimate Thread Group)
         run: |
-          java -cp "jmeter/lib/ext/*:jmeter/lib/cmdrunner/cmdrunner-2.2.jar" \
+          java -cp "jmeter/lib/ext/*:jmeter/lib/cmdrunner/*" \
             org.jmeterplugins.manager.PluginManagerCMD install jpgc-casutg
 
       - name: Verificar instalação
@@ -51,6 +55,7 @@ jobs:
           ls -l jmeter/lib/ext
           echo "=== CMD RUNNER ==="
           ls -l jmeter/lib/cmdrunner
+
       - name: Run JMeter test
         run: jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results/results.jtl
 
