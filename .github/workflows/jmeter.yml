@@ -27,18 +27,20 @@ jobs:
           mv apache-jmeter-5.6.3 jmeter
 
       - name: Instalar JMeter Plugins Manager
-        run: |
-          mkdir -p jmeter/lib/ext
+          run: |
+            mkdir -p jmeter/lib/ext
+            mkdir -p jmeter/lib/cmdrunner
 
-          # Baixar Plugins Manager oficial
-          wget https://jmeter-plugins.org/downloads/file/PluginsManager-1.8.jar \
-            -O jmeter/lib/ext/PluginsManager.jar
+            # Plugins Manager (link mais recente e válido)
+            wget https://raw.githubusercontent.com/undera/jmeter-plugins/master/plugins-manager/target/PluginsManager.jar \
+              -O jmeter/lib/ext/PluginsManager.jar
 
-          # Baixar CMDRunner
-          wget https://jmeter-plugins.org/downloads/file/cmdrunner-2.2.jar \
-            -O jmeter/lib/cmdrunner-2.2.jar
+            # CMDRunner (repositório oficial)
+            wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
+              -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
 
-          ls -R jmeter/lib
+            ls -R jmeter/lib
+
 
       - name: Instalar plugins adicionais via PluginManagerCMD
         run: |
