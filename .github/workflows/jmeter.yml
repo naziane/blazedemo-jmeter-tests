@@ -14,14 +14,11 @@ jobs:
       - name: Criar diretório de resultados
         run: mkdir -p results
 
-      # ----------------------------
-      # Instalar JDK 11 (necessário para o PluginManagerCMD)
-      # ----------------------------
-      - name: Install Java 11
+      - name: Install Java
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
 
       - name: Download Apache JMeter
         run: |
@@ -29,39 +26,23 @@ jobs:
           tar -xzf apache-jmeter-5.6.3.tgz
           mv apache-jmeter-5.6.3 jmeter
 
-      - name: Instalar Plugin Manager + CMDRunner
+      # ----------------------------------------------------------
+      # Instalar os plugins MANUALMENTE (SEM PluginManagerCMD)
+      # ----------------------------------------------------------
+      - name: Instalar Plugin CASUTG + Standard (necessário para VTTimer)
         run: |
           mkdir -p jmeter/lib/ext
-          mkdir -p jmeter/lib/cmdrunner
 
-          curl -sSL https://jmeter-plugins.org/get/ \
-            -o jmeter/lib/ext/jmeter-plugins-manager.jar
+          # CASUTG (Ultimate Thread Group)
+          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar \
+            -P jmeter/lib/ext
 
-          wget https://repo.maven.apache.org/maven2/kg/apc/cmdrunner/2.2/cmdrunner-2.2.jar \
-            -O jmeter/lib/cmdrunner/cmdrunner-2.2.jar
+          # Standard Set (CONTÉM VariableThroughputTimer)
+          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-standard/1.4/jmeter-plugins-standard-1.4.jar \
+            -P jmeter/lib/ext
 
-          # >>> ESSENCIAL: Java 11 funciona, Java 17 quebra!
-          java -cp "jmeter/lib/ext/jmeter-plugins-manager.jar:jmeter/lib/cmdrunner/cmdrunner-2.2.jar" \
-            org.jmeterplugins.repository.PluginManagerCMDInstaller
-
-      - name: Debug listar arquivos
-        run: |
-          ls -lh jmeter/lib/cmdrunner
-
-      # Instalar CASUTG
-      - name: Instalar CASUTG (Ultimate Thread Group)
-        run: |
-          java -cp "jmeter/lib/ext/*:jmeter/lib/cmdrunner/*" \
-            org.jmeterplugins.manager.PluginManagerCMD install jpgc-casutg
-
-      # ----------------------------
-      # Agora troca para Java 17 (só para rodar o teste)
-      # ----------------------------
-      - name: Install Java 17
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      - name: Verificar instalação
+        run: ls -l jmeter/lib/ext
 
       - name: Run JMeter test
         run: jmeter/bin/jmeter -n -t tests/blazedemo.jmx -l results/results.jtl
