@@ -12,10 +12,10 @@
       <com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup guiclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroupGui" testclass="com.blazemeter.jmeter.threads.concurrency.ConcurrencyThreadGroup" testname=" Concurrency Thread Group - Teste de Carga">
         <elementProp name="ThreadGroup.main_controller" elementType="com.blazemeter.jmeter.control.VirtualUserController"/>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
-        <stringProp name="TargetLevel">200</stringProp>
+        <stringProp name="TargetLevel">250</stringProp>
         <stringProp name="RampUp">60</stringProp>
-        <stringProp name="Steps">6</stringProp>
-        <stringProp name="Hold">300</stringProp>
+        <stringProp name="Steps">1</stringProp>
+        <stringProp name="Hold">120</stringProp>
         <stringProp name="LogFilename"></stringProp>
         <stringProp name="Iterations"></stringProp>
         <boolProp name="same_user_on_next_iteration">false</boolProp>
@@ -47,21 +47,6 @@
           <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Asserção de Duração">
             <stringProp name="DurationAssertion.duration">2000</stringProp>
           </DurationAssertion>
-          <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">def p90 = prev.getLatency()  // JMeter já coleta percentis
-def threshold = 2000  // 2 segundos
-
-if (p90 &gt; threshold) {
-    AssertionResult.setFailure(true)
-    AssertionResult.setFailureMessage(&quot;90th percentile acima de 2s: &quot; + p90 + &quot; ms&quot;)
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
           <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Buscar voos">
@@ -95,21 +80,6 @@ if (p90 &gt; threshold) {
             <stringProp name="DurationAssertion.duration"></stringProp>
           </DurationAssertion>
           <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">def p90 = prev.getLatency()  // JMeter já coleta percentis
-def threshold = 2000  // 2 segundos
-
-if (p90 &gt; threshold) {
-    AssertionResult.setFailure(true)
-    AssertionResult.setFailureMessage(&quot;90th percentile acima de 2s: &quot; + p90 + &quot; ms&quot;)
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
-          <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Selecionar voo">
           <stringProp name="HTTPSampler.path">https://blazedemo.com/purchase.php?flight=1</stringProp>
@@ -135,21 +105,6 @@ if (p90 &gt; threshold) {
           <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Asserção de Duração" enabled="true">
             <stringProp name="DurationAssertion.duration"></stringProp>
           </DurationAssertion>
-          <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">def p90 = prev.getLatency()  // JMeter já coleta percentis
-def threshold = 2000  // 2 segundos
-
-if (p90 &gt; threshold) {
-    AssertionResult.setFailure(true)
-    AssertionResult.setFailureMessage(&quot;90th percentile acima de 2s: &quot; + p90 + &quot; ms&quot;)
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
           <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Comprar passagem">
@@ -255,21 +210,6 @@ if (p90 &gt; threshold) {
             <stringProp name="DurationAssertion.duration"></stringProp>
           </DurationAssertion>
           <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">def p90 = prev.getLatency()  // JMeter já coleta percentis
-def threshold = 2000  // 2 segundos
-
-if (p90 &gt; threshold) {
-    AssertionResult.setFailure(true)
-    AssertionResult.setFailureMessage(&quot;90th percentile acima de 2s: &quot; + p90 + &quot; ms&quot;)
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
-          <hashTree/>
         </hashTree>
         <kg.apc.jmeter.timers.VariableThroughputTimer guiclass="kg.apc.jmeter.timers.VariableThroughputTimerGui" testclass="kg.apc.jmeter.timers.VariableThroughputTimer" testname="Throughput Shaping Timer">
           <collectionProp name="load_profile">
@@ -292,80 +232,6 @@ if (p90 &gt; threshold) {
         </kg.apc.jmeter.timers.VariableThroughputTimer>
         <hashTree/>
         <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Relatório Agregado">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <sentBytes>true</sentBytes>
-              <url>true</url>
-              <threadCounts>true</threadCounts>
-              <idleTime>true</idleTime>
-              <connectTime>true</connectTime>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Resultados de Asserção">
-          <boolProp name="ResultCollector.error_logging">true</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <sentBytes>true</sentBytes>
-              <url>true</url>
-              <threadCounts>true</threadCounts>
-              <idleTime>true</idleTime>
-              <connectTime>true</connectTime>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Relatório de Sumário">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
@@ -447,37 +313,6 @@ if (p90 &gt; threshold) {
             <stringProp name="DurationAssertion.duration">2000</stringProp>
           </DurationAssertion>
           <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">long responseTime = prev.getTime()  // tempo atual em ms
-long limite = 2000               // limite de 2 segundos
-
-// sincroniza o acesso à lista global
-synchronized(props) {
-    def times = props.get(&quot;responseTimes&quot;)
-    if (times == null) {
-        times = Collections.synchronizedList([])
-        props.put(&quot;responseTimes&quot;, times)
-    }
-    times.add(responseTime)
-
-    // calcula percentil 90
-    def sorted = times.toArray() as long[]
-    Arrays.sort(sorted)
-    int index90 = (int)(0.9 * sorted.length)
-    long percentile90 = sorted[index90]
-
-    if (percentile90 &gt; limite) {
-        AssertionResult.setFailure(true)
-        AssertionResult.setFailureMessage(&quot;90th percentile exceeded: ${percentile90} ms &gt; ${limite} ms&quot;)
-    }
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
-          <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Acessar pagina Inicial">
           <stringProp name="HTTPSampler.path">https://blazedemo.com/</stringProp>
@@ -504,37 +339,6 @@ synchronized(props) {
             <stringProp name="DurationAssertion.duration">2000</stringProp>
           </DurationAssertion>
           <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">long responseTime = prev.getTime()  // tempo atual em ms
-long limite = 2000               // limite de 2 segundos
-
-// sincroniza o acesso à lista global
-synchronized(props) {
-    def times = props.get(&quot;responseTimes&quot;)
-    if (times == null) {
-        times = Collections.synchronizedList([])
-        props.put(&quot;responseTimes&quot;, times)
-    }
-    times.add(responseTime)
-
-    // calcula percentil 90
-    def sorted = times.toArray() as long[]
-    Arrays.sort(sorted)
-    int index90 = (int)(0.9 * sorted.length)
-    long percentile90 = sorted[index90]
-
-    if (percentile90 &gt; limite) {
-        AssertionResult.setFailure(true)
-        AssertionResult.setFailureMessage(&quot;90th percentile exceeded: ${percentile90} ms &gt; ${limite} ms&quot;)
-    }
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
-          <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Selecionar voo">
           <stringProp name="HTTPSampler.path">https://blazedemo.com/purchase.php?flight=1</stringProp>
@@ -560,37 +364,6 @@ synchronized(props) {
           <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Asserção de Duração">
             <stringProp name="DurationAssertion.duration">2000</stringProp>
           </DurationAssertion>
-          <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion" enabled="true">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">long responseTime = prev.getTime()  // tempo atual em ms
-long limite = 2000               // limite de 2 segundos
-
-// sincroniza o acesso à lista global
-synchronized(props) {
-    def times = props.get(&quot;responseTimes&quot;)
-    if (times == null) {
-        times = Collections.synchronizedList([])
-        props.put(&quot;responseTimes&quot;, times)
-    }
-    times.add(responseTime)
-
-    // calcula percentil 90
-    def sorted = times.toArray() as long[]
-    Arrays.sort(sorted)
-    int index90 = (int)(0.9 * sorted.length)
-    long percentile90 = sorted[index90]
-
-    if (percentile90 &gt; limite) {
-        AssertionResult.setFailure(true)
-        AssertionResult.setFailureMessage(&quot;90th percentile exceeded: ${percentile90} ms &gt; ${limite} ms&quot;)
-    }
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
           <hashTree/>
         </hashTree>
         <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Comprar passagem">
@@ -696,37 +469,6 @@ synchronized(props) {
             <stringProp name="DurationAssertion.duration">2000</stringProp>
           </DurationAssertion>
           <hashTree/>
-          <JSR223Assertion guiclass="TestBeanGUI" testclass="JSR223Assertion" testname="JSR223 Assertion">
-            <stringProp name="cacheKey">true</stringProp>
-            <stringProp name="filename"></stringProp>
-            <stringProp name="parameters"></stringProp>
-            <stringProp name="script">long responseTime = prev.getTime()  // tempo atual em ms
-long limite = 2000               // limite de 2 segundos
-
-// sincroniza o acesso à lista global
-synchronized(props) {
-    def times = props.get(&quot;responseTimes&quot;)
-    if (times == null) {
-        times = Collections.synchronizedList([])
-        props.put(&quot;responseTimes&quot;, times)
-    }
-    times.add(responseTime)
-
-    // calcula percentil 90
-    def sorted = times.toArray() as long[]
-    Arrays.sort(sorted)
-    int index90 = (int)(0.9 * sorted.length)
-    long percentile90 = sorted[index90]
-
-    if (percentile90 &gt; limite) {
-        AssertionResult.setFailure(true)
-        AssertionResult.setFailureMessage(&quot;90th percentile exceeded: ${percentile90} ms &gt; ${limite} ms&quot;)
-    }
-}
-</stringProp>
-            <stringProp name="scriptLanguage">groovy</stringProp>
-          </JSR223Assertion>
-          <hashTree/>
         </hashTree>
         <kg.apc.jmeter.timers.VariableThroughputTimer guiclass="kg.apc.jmeter.timers.VariableThroughputTimerGui" testclass="kg.apc.jmeter.timers.VariableThroughputTimer" testname="Throughput Shaping Timer">
           <collectionProp name="load_profile">
@@ -786,80 +528,6 @@ synchronized(props) {
         </ResultCollector>
         <hashTree/>
         <ResultCollector guiclass="StatVisualizer" testclass="ResultCollector" testname="Relatório Agregado">
-          <boolProp name="ResultCollector.error_logging">false</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <sentBytes>true</sentBytes>
-              <url>true</url>
-              <threadCounts>true</threadCounts>
-              <idleTime>true</idleTime>
-              <connectTime>true</connectTime>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-        <ResultCollector guiclass="AssertionVisualizer" testclass="ResultCollector" testname="Resultados de Asserção">
-          <boolProp name="ResultCollector.error_logging">true</boolProp>
-          <objProp>
-            <name>saveConfig</name>
-            <value class="SampleSaveConfiguration">
-              <time>true</time>
-              <latency>true</latency>
-              <timestamp>true</timestamp>
-              <success>true</success>
-              <label>true</label>
-              <code>true</code>
-              <message>true</message>
-              <threadName>true</threadName>
-              <dataType>true</dataType>
-              <encoding>false</encoding>
-              <assertions>true</assertions>
-              <subresults>true</subresults>
-              <responseData>false</responseData>
-              <samplerData>false</samplerData>
-              <xml>false</xml>
-              <fieldNames>true</fieldNames>
-              <responseHeaders>false</responseHeaders>
-              <requestHeaders>false</requestHeaders>
-              <responseDataOnError>false</responseDataOnError>
-              <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-              <assertionsResultsToSave>0</assertionsResultsToSave>
-              <bytes>true</bytes>
-              <sentBytes>true</sentBytes>
-              <url>true</url>
-              <threadCounts>true</threadCounts>
-              <idleTime>true</idleTime>
-              <connectTime>true</connectTime>
-            </value>
-          </objProp>
-          <stringProp name="filename"></stringProp>
-        </ResultCollector>
-        <hashTree/>
-        <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Relatório de Sumário">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>
             <name>saveConfig</name>
