@@ -26,17 +26,30 @@ jobs:
           tar -xzf apache-jmeter-5.6.3.tgz
           mv apache-jmeter-5.6.3 jmeter
 
-      - name: Instalar plugins JMeter (casutg + util)
+     - name: Instalar JMeter Plugins Manager
         run: |
-          mkdir -p jmeter/lib/ext
+        # Criar diretórios
+        mkdir -p jmeter/lib/ext
 
-          # Ultimate Thread Group (casutg)
-          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-casutg/2.10/jmeter-plugins-casutg-2.10.jar \
-            -P jmeter/lib/ext
+        # Baixar Plugins Manager oficial
+        wget https://jmeter-plugins.org/downloads/file/PluginsManager-1.8.jar -O jmeter/lib/ext/PluginsManager.jar
 
-          # Utilities (contém VariableThroughputTimer)
-          wget https://repo.maven.apache.org/maven2/kg/apc/jmeter-plugins-util/1.1.3/jmeter-plugins-util-1.1.3.jar \
-            -P jmeter/lib/ext
+        # Baixar CMDRunner (necessário para instalar plugins via CLI)
+        wget https://jmeter-plugins.org/downloads/file/cmdrunner-2.2.jar -O jmeter/lib/cmdrunner-2.2.jar
+
+        # Listar arquivos
+        ls -R jmeter/lib
+
+      - name: Instalar plugins adicionais via PluginManagerCMD
+        run: |
+          java -cp "jmeter/lib/ext/PluginsManager.jar:jmeter/lib/cmdrunner-2.2.jar" \
+            org.jmeterplugins.repository.PluginManagerCMD \
+            install jpgc-casutg,jpgc-tst,jpgc-graphs-basic,jpgc-graphs-additional
+
+        # Atualiza lista de plugins (gera arquivo .properties)
+        java -cp "jmeter/lib/ext/PluginsManager.jar:jmeter/lib/cmdrunner-2.2.jar" \
+          org.jmeterplugins.repository.PluginManagerCMD \
+          status
 
       - name: Verificar instalação de plugins
         run: ls -l jmeter/lib/ext
